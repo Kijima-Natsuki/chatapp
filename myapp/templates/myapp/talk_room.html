@@ -1,1 +1,33 @@
-TR
+{% load static %} 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'myapp/css/talk_room.css' %}" rel="stylesheet">
+    <title>talk_room</title>
+</head>
+<header>
+    <a href="{% url 'myapp:friends' %}" class="back_icon">＜</a>
+    {% for user in other_user %}
+        {{user.username}}
+    {% endfor %}
+</header>
+<body>
+    <div class="messages">
+        {% for message in messages %}
+            　{{message.sender.username}}<br>
+            　{{message.content}}
+            <div class="timestamp">
+            {{message.timestamp|date:"n/j H:i"}}
+            </div>
+        {% endfor %}
+    </div>
+    <footer>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">送信</button>
+        </form>
+    </footer>
+</body>

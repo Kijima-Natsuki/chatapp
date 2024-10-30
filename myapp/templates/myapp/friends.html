@@ -1,0 +1,48 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'myapp/css/friends.css' %}" rel="stylesheet">
+    <title>friends</title>
+</head>
+<body>
+    <header>友達</header>
+        <form class="search" action="" method="get">
+            <input name="query" value="{{ request.GET.query }}" type="text" />
+            <button type="submit">検索する</button>
+        </form>
+
+        <ul>
+            {% for item in talkrooms %}
+                <div class="talkroom">
+                    <a href="{% url 'myapp:talk_room' item.room.id %}">
+                        {% if item.other_user.profile_image %}
+                            <img class="profile_image" src="{{ item.other_user.profile_image.url }}">
+                        {% else %}
+                            <div class="null_img"></div>
+                        {% endif %}
+                    </a>
+                    <li>
+                        <a href="{% url 'myapp:talk_room' item.room.id %}">
+                            {{ item.other_user.username }}
+                        </a>
+                        <span>{{ item.room.created_at|date:"n/j H:i" }}</span>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+
+    <footer>
+        <a class="footer_a" href="{% url 'myapp:friends' %}">
+            <img class="people_img" src="{% static 'myapp/img/people-24px.svg' %}">
+            <span>友達</span>
+        </a>
+        <a class="footer_a" href="{% url 'myapp:setting' %}">
+            <img class="setting_img" src="{% static 'myapp/img/settings-black-18dp.svg' %}">
+            <span>設定</span>
+        </a>
+    </footer>
+</body>
+</html>

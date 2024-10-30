@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'myapp/css/signup.css'%}" rel="stylesheet">
+    <title>signup</title>
+</head>
+<body>
+    <header>会員登録</header>
+    {% block content %}
+    <div class="row">
+        <div class="col-sm-6">
+            <br>
+            <form class="signup_form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {{ field.label }}
+                    {{ field }}
+                    {{ field.errors }}
+                    <br>
+                {% endfor %}
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

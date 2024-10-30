@@ -1,0 +1,23 @@
+body {
+    margin: 0 auto;
+    width: 50vh;
+    height: 100vh;
+    border: 1px solid #000;
+}
+
+a {
+    display: block;
+    position: relative;
+    margin: 30px auto;
+    width: 75px;
+    height: 20px;
+    top: 40vh;
+    border: 2px solid #aaa;
+    border-radius: 10px;
+    background-color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 10px;
+    line-height: 20px;
+    color: #333;
+}

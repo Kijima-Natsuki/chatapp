@@ -1,1 +1,33 @@
-S
+{% load static %} 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'myapp/css/setting.css' %}" rel="stylesheet">
+    <title>friends</title>
+</head>
+<body>
+    <header>設定</header>
+    <div class="flex_wrap">
+        <a href="{% url 'myapp:username_change' %}">ユーザー名変更</a>
+        <a href="{% url 'myapp:useremail_change' %}">メールアドレス変更</a>
+        <a href="{% url 'myapp:userimage_change' %}">画像変更</a>
+        <a href="{% url 'myapp:password_change' %}">パスワード変更</a>
+        <form action="{% url 'myapp:logout_view' %}" method="post">
+            {% csrf_token %}
+            <p><input type="submit" value="ログアウト"></p>
+        </form>
+    </div>
+    <footer>
+        <a class="footer_a" href="{% url 'myapp:friends' %}">
+            <img class="people_img" src="{% static 'myapp/img/people-24px.svg' %}">
+            <span>友達</span>
+        </a>
+        <a class="footer_a" href="{% url 'myapp:setting' %}">
+            <img class="setting_img" src="{% static 'myapp/img/settings-black-18dp.svg' %}">
+            <span>設定</span>
+        </a>
+    </footer>
+</body>
+</html>

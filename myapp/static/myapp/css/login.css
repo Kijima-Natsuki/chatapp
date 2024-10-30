@@ -1,0 +1,40 @@
+body {
+    margin: 0 auto;
+    width: 50vh;
+    height: 100vh;
+    border: 1px solid #000;
+}
+
+header {
+    text-align: center;
+    line-height: 10vh;
+    height: 10vh;
+    font-size: 18px;
+    border-bottom: 1px solid #000;
+}
+
+.signup_form {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.signup_form input {
+    width: 100px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    border: 2px solid #aaa;
+    border-radius: 10px;
+    background-color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 10px;
+    line-height: 20px;
+    color: #333;
+}

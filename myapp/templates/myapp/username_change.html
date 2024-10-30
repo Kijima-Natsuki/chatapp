@@ -1,0 +1,28 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'myapp/css/userdata_change.css' %}" rel="stylesheet">
+    <title>username_change</title>
+</head>
+<body>
+    <header>ユーザー名変更</header>
+    <form action="{% url 'myapp:username_change' %}" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <p><input type="submit"></p>
+    </form>
+    <footer>
+        <a class="footer_a" href="{% url 'myapp:friends' %}">
+            <img class="people_img" src="{% static 'myapp/img/people-24px.svg' %}">
+            <span>友達</span>
+        </a>
+        <a class="footer_a" href="{% url 'myapp:setting' %}">
+            <img class="setting_img" src="{% static 'myapp/img/settings-black-18dp.svg' %}">
+            <span>設定</span>
+        </a>
+    </footer>
+</body>
+</html>
