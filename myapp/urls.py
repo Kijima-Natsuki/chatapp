@@ -16,7 +16,7 @@ urlpatterns = [
     path('password_change_done/', views.MyPasswordChangeDone.as_view(), name='password_change_done'),
     path('username_change/', views.update_username, name='username_change'),
     path('useremail_change/', views.update_useremail, name='useremail_change'),
-    path('userimage_change/', views.update_userimage, name='userimage_change')
+    path('userimage_change/', views.update_userimage, name='userimage_change'),
 ]
 
 if settings.DEBUG:

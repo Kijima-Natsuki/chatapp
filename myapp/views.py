@@ -4,6 +4,7 @@ from django.views.generic import TemplateView, CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.urls import reverse_lazy
+from django.db.models import Prefetch,OuterRef, Subquery, Q
 
 from .models import CustomUser, TalkRoom, Message
 
@@ -37,17 +38,20 @@ class FriendList(ListView):
         query = self.request.GET.get('query')
         user = self.request.user
 
-        talkrooms = TalkRoom.objects.filter(users=user)
+        talkrooms = TalkRoom.objects.filter(users=user).prefetch_related(Prefetch('users',queryset=CustomUser.objects.only('username', 'profile_image','id','email')))
 
         if query:
-            talkrooms = talkrooms.filter(users__username__icontains=query)
+            talkrooms = talkrooms.filter(
+            Q(users__username__icontains=query) | Q(users__email__icontains=query)
+        ).distinct()
 
         return talkrooms
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+    
         context['talkrooms'] = [
-            {'room': room, 'other_user': room.users.exclude(id=self.request.user.id).first()}
+            {'room': room, 'other_user': next((user for user in room.users.all() if user.id != self.request.user.id), None)}
             for room in context['talkrooms']
         ]
         return context
