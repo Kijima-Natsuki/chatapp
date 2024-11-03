@@ -54,6 +54,7 @@ ul {
 
 li {
     list-style: none;
+    width: 85%;
 }
 
 .talkroom {
@@ -62,6 +63,13 @@ li {
     height: auto;
     gap: 5px;
     border-bottom: 1px solid #000;
+}
+
+.latest_message {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 a, a:visited {

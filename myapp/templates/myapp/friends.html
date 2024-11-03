@@ -28,7 +28,18 @@
                         <a href="{% url 'myapp:talk_room' item.room.id %}">
                             {{ item.other_user.username }}
                         </a>
-                        <span>{{ item.room.created_at|date:"n/j H:i" }}</span>
+                        <span>
+                            {% if item.latest_messsage %}
+                                {{item.latest_timestamp|date:"n/j H:i"}}
+                            {% else %}
+                                {{ item.room.created_at|date:"n/j H:i" }}
+                            {% endif %}
+                        </span>
+                        <p class="latest_message">
+                            {% if item.latest_message %}
+                                {{ item.latest_message }}
+                            {% endif %}
+                        </p>
                     </li>
                 </div>
             {% endfor %}

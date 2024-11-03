@@ -173,6 +173,8 @@ ACCOUNT_LOGOUT_ON_GET = True
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'myapp.forms.SignUpForm'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 if os.path.isfile('.env'):
     env = environ.Env(DEBUG=(bool, False))
     environ.Env.read_env('.env')

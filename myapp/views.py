@@ -19,7 +19,7 @@ def index(request):
     return render(request, "myapp/index.html")
 
 def signup_view(request):
-    form = SignUpForm(request.POST or None)
+    form = SignUpForm(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
         form.save()
         return redirect("myapp:index")
@@ -37,8 +37,13 @@ class FriendList(ListView):
     def get_queryset(self):
         query = self.request.GET.get('query')
         user = self.request.user
-
-        talkrooms = TalkRoom.objects.filter(users=user).prefetch_related(Prefetch('users',queryset=CustomUser.objects.only('username', 'profile_image','id','email')))
+        
+        latest_message_subquery = Message.objects.filter(room=OuterRef('pk')).order_by('-timestamp').values('content')[:1]
+        latest_timestamp_subquery = Message.objects.filter(room=OuterRef('pk')).order_by('-timestamp').values('timestamp')[:1]
+        talkrooms = TalkRoom.objects.filter(users=user).prefetch_related(Prefetch('users',queryset=CustomUser.objects.only('username', 'profile_image','id','email'))).annotate(
+            latest_message=Subquery(latest_message_subquery),
+            latest_timestamp=Subquery(latest_timestamp_subquery)
+        )
 
         if query:
             talkrooms = talkrooms.filter(
@@ -51,7 +56,9 @@ class FriendList(ListView):
         context = super().get_context_data(**kwargs)
     
         context['talkrooms'] = [
-            {'room': room, 'other_user': next((user for user in room.users.all() if user.id != self.request.user.id), None)}
+            {'room': room,
+             'other_user': next((user for user in room.users.all() if user.id != self.request.user.id), None),
+             'latest_message': room.latest_message}
             for room in context['talkrooms']
         ]
         return context
@@ -75,17 +82,6 @@ def talk_room(request,pk):
     
 def setting(request):
     return render(request, "myapp/setting.html")
-
-class SignUpView(CreateView):
-    form_class = SignUpForm
-    template_name = "accounts/signup.html"
-    success_url = reverse_lazy("myapp:index")
-
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        self.object = user
-        return HttpResponseRedirect(self.get_success_url())
     
 class Login(LoginView):
     template_name = 'account/login.html'
